@@ -55,7 +55,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend_analytics_server.urls"
 
-API_URL = 'https://jsonplaceholder.typicode.com/posts'
+API_URL = 'https://685285cb0594059b23cdea1c.mockapi.io/ordenes'
 
 TEMPLATES = [
     {
@@ -131,10 +131,13 @@ ALLOWED_HOSTS = [
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = "/"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, STATIC_URL),
 ]
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
