@@ -31,21 +31,30 @@ def index(request):
         counter = Counter(productos)
         producto_mas_vendido = counter.most_common(1)[0][0]
     
+
+    # Calcular pedidos y ganancia por fecha
     orders_by_date = defaultdict(int)
-    money_by_date = defaultdict(float)
+    revenue_by_date = defaultdict(float)
     for row in rows:
         fecha_str = row.get('fecha')
         try:
             fecha = datetime.strptime(fecha_str, "%d/%m/%Y").strftime("%d/%m/%Y")
             orders_by_date[fecha] += 1
-            money_by_date[fecha] += 9.31  # Assuming each order is 9.31$
+            revenue_by_date[fecha] += 9.31  # Suponiendo cada pedido es 9.31$
         except Exception:
             continue
 
-    # Sort dates
-    sorted_dates = sorted(orders_by_date.keys(), key=lambda d: datetime.strptime(d, "%d/%m/%Y"))
-    orders_counts = [orders_by_date[date] for date in sorted_dates]
-    money_counts = [money_by_date[date] for date in sorted_dates]
+    # Ordenar fechas y calcular acumulados
+    sorted_dates = sorted(set(list(orders_by_date.keys()) + list(revenue_by_date.keys())), key=lambda d: datetime.strptime(d, "%d/%m/%Y"))
+    orders_cumulative = []
+    revenue_cumulative = []
+    total_orders = 0
+    total_revenue = 0.0
+    for date in sorted_dates:
+        total_orders += orders_by_date[date]
+        total_revenue += revenue_by_date[date]
+        orders_cumulative.append(total_orders)
+        revenue_cumulative.append(round(total_revenue, 2))
     
     data = {
         'title': "JMStore: Pedidos ",
@@ -54,9 +63,10 @@ def index(request):
         'ultimomes' : len(filtered_rows),
         'ganancia' :  str(round(len(rows)*9.31,2)) + "$",
         'masvendido' : producto_mas_vendido,
-        'chart_labels': json.dumps(sorted_dates),
-        'chart_orders': json.dumps(orders_counts),
-        'chart_money': json.dumps(money_counts),
+        'orders_labels': json.dumps(list(orders_by_date.keys())),
+        'orders_data': json.dumps(list(orders_by_date.values())),
+        'revenue_labels': json.dumps(sorted_dates),
+        'revenue_data': json.dumps(revenue_cumulative),
     }
     
     return render(request, 'dashboard/index.html', data)

@@ -149,9 +149,19 @@
       <div class="row-span-1 grid gap-6 mb-8 md:grid-cols-12">
         <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800 mb-8">
           <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-            Pedidos y Ganancias por fecha
+            Pedidos por fecha
           </h4>
+          <script>
+            window.ordersLabels = JSON.parse('{{ orders_labels|escapejs }}');
+            window.ordersData = JSON.parse('{{ orders_data|escapejs }}');
+            window.revenueLabels = JSON.parse('{{ revenue_labels|escapejs }}');
+            window.revenueData = JSON.parse('{{ revenue_data|escapejs }}');
+          </script>
           <canvas id="line"></canvas>
+          <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+            Ganancias por fecha
+          </h4>
+          <canvas id="line2"></canvas>
         </div>
       </div>
       <!-- END - Gráficos -->

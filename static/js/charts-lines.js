@@ -4,29 +4,18 @@
 const lineConfig = {
   type: 'line',
   data: {
-    labels: ['Hito 1', 'Hito 2', 'Hito 3', 'Hito 4', 'Hito 5', 'Hito 6', 'Hito 7'],
+    labels: window.ordersLabels || [],
     datasets: [
       {
-        label: 'Serie 1',
+        label: 'Pedidos',
         /**
          * These colors come from Tailwind CSS palette
          * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
          */
         backgroundColor: '#0694a2',
         borderColor: '#0694a2',
-        data: [43, 48, 40, 54, 67, 73, 70],
+        data: window.ordersData || [],
         fill: false,
-      },
-      {
-        label: 'Serie 2',
-        fill: false,
-        /**
-         * These colors come from Tailwind CSS palette
-         * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
-         */
-        backgroundColor: '#7e3af2',
-        borderColor: '#7e3af2',
-        data: [24, 50, 64, 74, 52, 51, 65],
       },
     ],
   },
@@ -69,3 +58,55 @@ const lineConfig = {
 // change this to the id of your chart element in HMTL
 const lineCtx = document.getElementById('line')
 window.myLine = new Chart(lineCtx, lineConfig)
+
+const revenueLabels = window.revenueLabels || []
+const revenueData = window.revenueData || []
+
+const revenueConfig = {
+  type: 'line',
+  data: {
+    labels: revenueLabels,
+    datasets: [
+      {
+        label: 'Ganancia acumulada ($)',
+        backgroundColor: '#7e3af2',
+        borderColor: '#7e3af2',
+        data: revenueData,
+        fill: false,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    legend: {
+      display: false,
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true,
+    },
+    scales: {
+      x: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Fecha',
+        },
+      },
+      y: {
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Ganancia acumulada ($)',
+        },
+      },
+    },
+  },
+}
+
+const lineCtx2 = document.getElementById('line2')
+window.myRevenueLine = new Chart(lineCtx2, revenueConfig)
