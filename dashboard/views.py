@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 import requests
 from django.conf import settings
 from datetime import datetime, timedelta
@@ -7,6 +7,7 @@ from collections import Counter, defaultdict
 import json
 
 @login_required
+@permission_required('dashboard.index_viewer', raise_exception=True)
 def index(request):
     
     response = requests.get(settings.API_URL)  
